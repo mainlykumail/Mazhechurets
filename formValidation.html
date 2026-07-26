@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+  <head>
+    <title>JavaScript Form Validation</title>
+
+    <style>
+      body {
+        font-family: Arial;
+        margin: 40px;
+      }
+
+      form {
+        width: 400px;
+      }
+
+      .field {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input {
+        width: 100%;
+        padding: 8px;
+      }
+
+      .error {
+        color: red;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <form id="registrationForm" novalidate>
+      <div class="field">
+        <label>Website</label>
+        <input type="url" id="website" required />
+
+        <small id="websiteError" class="error"> </small>
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+
+        <input type="email" id="email" required />
+
+        <small id="emailError" class="error"> </small>
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+
+        <input type="password" id="password" required />
+
+        <small id="passwordError" class="error"> </small>
+      </div>
+
+      <div class="field">
+        <label>Confirm Password</label>
+
+        <input type="password" id="confirmPassword" required />
+
+        <small id="confirmPasswordError" class="error"> </small>
+      </div>
+
+      <div class="field">
+        <label>Phone Number</label>
+
+        <input type="tel" id="phone" required />
+
+        <small id="phoneError" class="error"> </small>
+      </div>
+
+      <div class="field">
+        <label>
+          <input type="checkbox" id="terms" />
+
+          I agree to the Terms and Conditions
+        </label>
+
+        <small id="termsError" class="error"> </small>
+      </div>
+
+      <button type="submit">Register</button>
+    </form>
+
+    <script>
+      const form = document.getElementById("registrationForm");
+
+      const website = document.getElementById("website");
+      const email = document.getElementById("email");
+      const password = document.getElementById("password");
+      const confirmPassword = document.getElementById("confirmPassword");
+      const phone = document.getElementById("phone");
+      const terms = document.getElementById("terms");
+      //errors
+
+      const websiteError = document.getElementById("websiteError");
+
+      const emailError = document.getElementById("emailError");
+
+      const passwordError = document.getElementById("passwordError");
+
+      const confirmPasswordError = document.getElementById(
+        "confirmPasswordError",
+      );
+
+      const phoneError = document.getElementById("phoneError");
+
+      const termsError = document.getElementById("termsError");
+
+      form.addEventListener("submit", function (event) {
+        websiteError.textContent = "";
+        emailError.textContent = "";
+        passwordError.textContent = "";
+        confirmPasswordError.textContent = "";
+        phoneError.textContent = "";
+        termsError.textContent = "";
+
+        if (website.value.trim() === "") {
+          event.preventDefault();
+
+          websiteError.textContent = "Website is required.";
+        } else if (!website.value.startsWith("https://")) {
+          event.preventDefault();
+
+          websiteError.textContent = "Website must start with https://";
+        }
+
+        if (!email.value.endsWith("@gmail.com")) {
+          event.preventDefault();
+
+          emailError.innerHTML = "<i>Only Gmail addresses are accepted.</i>";
+        }
+
+        if (password.value.length < 8) {
+          event.preventDefault();
+
+          passwordError.textContent = "Minimum 8 characters.";
+        } else if (!/[A-Z]/.test(password.value)) {
+          event.preventDefault();
+
+          passwordError.textContent = "Must contain one uppercase letter.";
+        } else if (!/[a-z]/.test(password.value)) {
+          event.preventDefault();
+
+          passwordError.textContent = "Must contain one lowercase letter.";
+        } else if (!/[0-9]/.test(password.value)) {
+          event.preventDefault();
+
+          passwordError.textContent = "Must contain one digit.";
+        } else if (!/[!@#$%^&*]/.test(password.value)) {
+          event.preventDefault();
+
+          passwordError.textContent = "Must contain one special character.";
+        }
+
+        if (password.value !== confirmPassword.value) {
+          event.preventDefault();
+
+          confirmPasswordError.textContent = "Passwords do not match.";
+        }
+
+        if (!/^[0-9]{10}$/.test(phone.value)) {
+          //regex to check if phone number contains exactly 10 digits with carets and dollar sign to match the entire string
+          event.preventDefault();
+
+          phoneError.textContent =
+            "Phone number must contain exactly 10 digits.";
+        }
+
+        if (!terms.checked) {
+          event.preventDefault();
+
+          termsError.textContent = "You must accept the Terms and Conditions.";
+        }
+      });
+    </script>
+  </body>
+</html>
